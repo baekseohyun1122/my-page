@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>보리의 파스텔 디저트 공간 🍰</title>
+  <!-- 구글 폰트: 둥글둥글하고 귀여운 서체 -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gaegu:wght@400;700&family=Gowun+Dodum&display=swap" rel="stylesheet">
+  
+  <style>
+    /* Global & Theme Settings */
+    :root {
+      --bg-gradient: linear-gradient(135deg, #fff5f7 0%, #fff0f5 50%, #f0f7ff 100%);
+      --card-bg: #ffffff;
+      --pink-primary: #ffb7c5;
+      --pink-soft: #ffe4e8;
+      --mint-primary: #b2ebd9;
+      --yellow-primary: #fff2b2;
+      --purple-primary: #e2c0ff;
+      --text-main: #5a4b51;
+      --text-muted: #8c7b83;
+      --shadow: 0 10px 25px rgba(230, 180, 200, 0.3);
+      --radius: 24px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Gowun Dodum', sans-serif;
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body {
+      background: var(--bg-gradient);
+      background-attachment: fixed;
+      color: var(--text-main);
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding-bottom: 60px;
+    }
+
+    h1, h2, h3, .font-cute {
+      font-family: 'Gaegu', cursive;
+    }
+
+    /* Container */
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+
+    /* Sparkle Trail Effect */
+    .sparkle {
+      position: absolute;
+      pointer-events: none;
+      background: radial-gradient(circle, #fff 20%, var(--pink-primary) 70%, transparent 100%);
+      border-radius: 50%;
+      animation: floatFade 1s forwards ease-out;
+      z-index: 9999;
+    }
+
+    @keyframes floatFade {
+      0% {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+      }
+      100% {
+        opacity: 0;
+        transform: translate(-50%, -80px) scale(0.1) rotate(180deg);
+      }
+    }
+
+    /* Header Profile Section */
+    .header-card {
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-radius: var(--radius);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 3px solid #ffffff;
+      margin-top: 20px;
+      margin-bottom: 30px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header-card::before {
+      content: '✨';
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      font-size: 1.5rem;
+    }
+
+    .header-card::after {
+      content: '🧁';
+      position: absolute;
+      bottom: 15px;
+      right: 20px;
+      font-size: 1.8rem;
+    }
+
+    .avatar-wrapper {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 15px;
+      background: linear-gradient(135deg, var(--pink-soft), var(--yellow-primary));
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      box-shadow: 0 8px 15px rgba(255, 183, 197, 0.4);
+      border: 4px solid #fff;
+      animation: pulse 3s infinite ease-in-out;
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    .nickname {
+      font-size: 2.8rem;
+      color: #ff6f91;
+      margin-bottom: 5px;
+      letter-spacing: 1px;
+    }
+
+    .tagline {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+      background: #fff;
+      display: inline-block;
+      padding: 6px 16px;
+      border-radius: 20px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    }
+
+    /* Section Styling */
+    .section-title {
+      font-size: 2.2rem;
+      text-align: center;
+      margin: 35px 0 20px;
+      color: #4a3e3d;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    /* Flip Cards Grid */
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 18px;
+    }
+
+    .flip-card {
+      background-color: transparent;
+      height: 220px;
+      perspective: 1000px;
+      cursor: pointer;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      text-align: center;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+      transform-style: preserve-3d;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .card-front, .card-back {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      -webkit-backface-visibility: hidden;
+      backface-visibility: hidden;
+      border-radius: var(--radius);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      border: 3px solid #ffffff;
+    }
+
+    .card-front {
+      background: linear-gradient(145deg, #ffffff, #fff5f8);
+    }
+
+    .card-front .icon {
+      font-size: 3.5rem;
+      margin-bottom: 10px;
+      transition: transform 0.3s;
+    }
+
+    .flip-card:hover .card-front .icon {
+      transform: scale(1.15) rotate(5deg);
+    }
+
+    .card-front .title {
+      font-family: 'Gaegu', cursive;
+      font-size: 1.6rem;
+      color: #ff6f91;
+      font-weight: bold;
+    }
+
+    .card-front .hint {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 8px;
+      background: rgba(255,183,197,0.2);
+      padding: 3px 10px;
+      border-radius: 10px;
+    }
+
+    .card-back {
+      transform: rotateY(180deg);
+      color: #fff;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+
+    .card-back.cat-bg { background: linear-gradient(135deg, #ffb3ba, #ffdfba); }
+    .card-back.art-bg { background: linear-gradient(135deg, #baffc9, #bae1ff); }
+    .card-back.ramen-bg { background: linear-gradient(135deg, #ffffba, #ffb3ba); color: #5a4b51; text-shadow: none; }
+
+    .card-back h4 {
+      font-family: 'Gaegu', cursive;
+      font-size: 1.5rem;
+      margin-bottom: 8px;
+    }
+
+    .card-back p {
+      font-size: 0.95rem;
+      line-height: 1.4;
+      word-break: keep-all;
+    }
+
+    /* OX Quiz Section */
+    .quiz-card {
+      background: #ffffff;
+      border-radius: var(--radius);
+      padding: 25px 20px;
+      box-shadow: var(--shadow);
+      text-align: center;
+      border: 3px solid #ffffff;
+      position: relative;
+    }
+
+    .quiz-question {
+      font-size: 1.25rem;
+      margin-bottom: 20px;
+      font-weight: 500;
+    }
+
+    .quiz-options {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .btn-quiz {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      border: none;
+      font-size: 2.2rem;
+      font-family: 'Gaegu', cursive;
+      font-weight: bold;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-o {
+      background: var(--pink-soft);
+      color: #ff477e;
+    }
+
+    .btn-x {
+      background: #eef2ff;
+      color: #4ea8de;
+    }
+
+    .btn-quiz:hover {
+      transform: translateY(-4px) scale(1.05);
+    }
+
+    .btn-quiz:active {
+      transform: translateY(1px);
+    }
+
+    /* Quiz Result Overlay Inside Box */
+    .quiz-result {
+      margin-top: 20px;
+      padding: 12px;
+      border-radius: 16px;
+      font-family: 'Gaegu', cursive;
+      font-size: 1.4rem;
+      display: none;
+      animation: popIn 0.3s ease-out;
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    .quiz-result.correct {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+      border: 2px dashed #a5d6a7;
+    }
+
+    .quiz-result.wrong {
+      background-color: #ffebee;
+      color: #c62828;
+      border: 2px dashed #ef9a9a;
+    }
+
+    /* Fortune Teller Section */
+    .fortune-card {
+      background: linear-gradient(135deg, #ffffff 0%, #fef4ff 100%);
+      border-radius: var(--radius);
+      padding: 30px 20px;
+      text-align: center;
+      box-shadow: var(--shadow);
+      border: 3px solid #ffffff;
+    }
+
+    .btn-fortune {
+      background: linear-gradient(135deg, var(--purple-primary), var(--pink-primary));
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-size: 1.3rem;
+      font-family: 'Gaegu', cursive;
+      border-radius: 30px;
+      cursor: pointer;
+      box-shadow: 0 6px 15px rgba(226, 192, 255, 0.6);
+      transition: all 0.2s;
+    }
+
+    .btn-fortune:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(226, 192, 255, 0.8);
+    }
+
+    .btn-fortune:active {
+      transform: translateY(1px);
+    }
+
+    .fortune-display {
+      margin-top: 25px;
+      min-height: 80px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #ffffff;
+      border-radius: 18px;
+      padding: 15px;
+      border: 2px solid var(--pink-soft);
+      font-size: 1.1rem;
+      line-height: 1.5;
+      box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+      word-break: keep-all;
+    }
+
+    .fortune-placeholder {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Confetti Burst (CSS) */
+    .confetti-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      pointer-events: none;
+      z-index: 10000;
+      overflow: hidden;
+    }
+
+    .confetti-piece {
+      position: absolute;
+      width: 10px;
+      height: 10px;
+      top: -20px;
+      animation: fall 2.5s linear forwards;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(105vh) rotate(720deg);
+        opacity: 0;
+      }
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      margin-top: 40px;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Mobile Adaptations */
+    @media (max-width: 480px) {
+      .container { padding: 12px; }
+      .nickname { font-size: 2.3rem; }
+      .cards-grid { grid-template-columns: 1fr; }
+      .flip-card { height: 180px; }
+      .section-title { font-size: 1.8rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Confetti Layer -->
+  <div class="confetti-container" id="confettiContainer"></div>
+
+  <div class="container">
+    
+    <!-- Profile Header -->
+    <header class="header-card">
+      <div class="avatar-wrapper">
+        🐱
+      </div>
+      <h1 class="nickname">보리 (Bori)</h1>
+      <p class="tagline">🍰 파스텔 디저트 디저트 카페에 오신 걸 환영해요!</p>
+    </header>
+
+    <!-- Flip Cards: Favorite Things -->
+    <section>
+      <h2 class="section-title">✨ 보리가 좋아하는 3가지</h2>
+      <div class="cards-grid">
+        
+        <!-- Card 1: Cat -->
+        <div class="flip-card" onclick="flipCard(this)">
+          <div class="flip-card-inner">
+            <div class="card-front">
+              <div class="icon">🐾</div>
+              <div class="title">고양이</div>
+              <div class="hint">터치해서 이유 보기!</div>
+            </div>
+            <div class="card-back cat-bg">
+              <h4>왜 좋아할까요? 🐱</h4>
+              <p>도도한 척하다가 갑자기 골골송 부르는 반전 매력에 완전히 푹 빠졌기 때문이죠!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Drawing -->
+        <div class="flip-card" onclick="flipCard(this)">
+          <div class="flip-card-inner">
+            <div class="card-front">
+              <div class="icon">🎨</div>
+              <div class="title">그림 그리기</div>
+              <div class="hint">터치해서 이유 보기!</div>
+            </div>
+            <div class="card-back art-bg">
+              <h4>왜 좋아할까요? 🎨</h4>
+              <p>낙서 한 줄로 시작해서 나만의 파스텔 세상을 만들어내는 게 너무 신나거든요!</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Ramen -->
+        <div class="flip-card" onclick="flipCard(this)">
+          <div class="flip-card-inner">
+            <div class="card-front">
+              <div class="icon">🍜</div>
+              <div class="title">라면</div>
+              <div class="hint">터치해서 이유 보기!</div>
+            </div>
+            <div class="card-back ramen-bg">
+              <h4>왜 좋아할까요? 🍜</h4>
+              <p>밤 11시에 끓여 먹는 라면 한 그릇은 세상 어떤 고급 디저트보다 달콤하니까요!</p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- OX Quiz Section -->
+    <section>
+      <h2 class="section-title">❓ 보리 퀴즈</h2>
+      <div class="quiz-card">
+        <p class="quiz-question">"나는 고양이를 키운다!" 🐾</p>
+        <div class="quiz-options">
+          <button class="btn-quiz btn-o" onclick="checkQuiz(true)">O</button>
+          <button class="btn-quiz btn-x" onclick="checkQuiz(false)">X</button>
+        </div>
+        <div id="quizResult" class="quiz-result"></div>
+      </div>
+    </section>
+
+    <!-- Fortune Teller Section -->
+    <section>
+      <h2 class="section-title">🔮 오늘의 운세 디저트</h2>
+      <div class="fortune-card">
+        <button class="btn-fortune" onclick="getFortune()">🎲 오늘의 운세 뽑기!</button>
+        <div class="fortune-display" id="fortuneDisplay">
+          <span class="fortune-placeholder">버튼을 눌러 오늘의 달콤한 운세를 확인해보세요! 🧁</span>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <p>© 2026 Bori's Pastel Space • Made with 💕</p>
+    </footer>
+
+  </div>
+
+  <script>
+    /* 1. Sparkle Mouse/Touch Effect */
+    function createSparkle(x, y) {
+      const sparkle = document.createElement('div');
+      sparkle.className = 'sparkle';
+      
+      // Random size
+      const size = Math.random() * 12 + 8;
+      sparkle.style.width = size + 'px';
+      sparkle.style.height = size + 'px';
+      
+      sparkle.style.left = x + 'px';
+      sparkle.style.top = y + 'px';
+      
+      document.body.appendChild(sparkle);
+      
+      setTimeout(() => {
+        sparkle.remove();
+      }, 1000);
+    }
+
+    let lastSparkle = 0;
+    function handlePointerMove(e) {
+      const now = Date.now();
+      if (now - lastSparkle > 40) { // Throttling
+        const x = e.touches ? e.touches[0].clientX : e.clientX;
+        const y = e.touches ? e.touches[0].clientY : e.clientY;
+        createSparkle(x, y + window.scrollY);
+        lastSparkle = now;
+      }
+    }
+
+    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('touchmove', handlePointerMove);
+
+    /* 2. Card Flip Function */
+    function flipCard(cardElement) {
+      cardElement.classList.toggle('flipped');
+    }
+
+    /* 3. OX Quiz Logic & Effects */
+    function checkQuiz(userAnswer) {
+      const resultDiv = document.getElementById('quizResult');
+      resultDiv.style.display = 'block';
+
+      if (userAnswer === true) {
+        // Correct Answer
+        resultDiv.className = 'quiz-result correct';
+        resultDiv.innerHTML = '🎉 정답입니다! 야옹이 집사의 길을 걷고 있어요! 🐱✨';
+        triggerConfetti();
+      } else {
+        // Wrong Answer
+        resultDiv.className = 'quiz-result wrong';
+        resultDiv.innerHTML = '😭 아쉬워요! 보리는 귀여운 고양이와 함께 살고 있답니다!';
+        shakeQuizCard();
+      }
+    }
+
+    // Quiz Card Shake Effect on wrong answer
+    function shakeQuizCard() {
+      const quizCard = document.querySelector('.quiz-card');
+      quizCard.style.animation = 'none';
+      quizCard.offsetHeight; // trigger reflow
+      quizCard.style.animation = 'shake 0.4s ease-in-out';
+    }
+
+    // Add shake keyframes dynamically
+    const styleSheet = document.createElement("style");
+    styleSheet.innerText = `
+      @keyframes shake {
+        0%, 100% { transform: translateX(0); }
+        20%, 60% { transform: translateX(-8px); }
+        40%, 80% { transform: translateX(8px); }
+      }
+    `;
+    document.head.appendChild(styleSheet);
+
+    // Confetti Effect
+    function triggerConfetti() {
+      const container = document.getElementById('confettiContainer');
+      container.innerHTML = '';
+      const colors = ['#ffb7c5', '#b2ebd9', '#fff2b2', '#e2c0ff', '#ff9aa2'];
+
+      for (let i = 0; i < 40; i++) {
+        const piece = document.createElement('div');
+        piece.className = 'confetti-piece';
+        piece.style.left = Math.random() * 100 + 'vw';
+        piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+        piece.style.animationDelay = Math.random() * 0.5 + 's';
+        piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+        container.appendChild(piece);
+      }
+
+      setTimeout(() => {
+        container.innerHTML = '';
+      }, 3000);
+    }
+
+    /* 4. Fortune Teller Logic (12 Fortunes) */
+    const fortunes = [
+      "🍓 [딸기 케이크] 오늘 당신의 하루는 달콤함으로 가득 찰 거예요! 생각지도 못한 행운이 찾아옵니다.",
+      "🍫 [초코 마카롱] 집중력이 솟아나는 하루! 미뤄두었던 일들을 깔끔하게 해결할 수 있어요.",
+      "🥞 [수플레 팬케이크] 보송보송하고 따뜻한 위로가 함께하는 기분 좋은 하루가 될 거예요.",
+      "🍦 [바닐라 아이스크림] 냉장고에서 맛있는 맛집 잔치를 열어보세요. 맛있는 음식을 먹을 운명!",
+      "🍩 [크림 도넛] 둥글둥글 마음을 편하게 먹으면 모든 문제가 솔솔 풀어집니다.",
+      "🍋 [레몬 타르트] 상큼한 아이디어가 톡톡 튀어 나오는 날! 하고 싶었던 걸 도전해보세요.",
+      "☕ [따뜻한 라떼] 마음이 따뜻해지는 소식을 들을 수 있어요. 편안한 마음을 가져보세요.",
+      "🍪 [초코칩 쿠키] 바삭하고 기분 좋은 깜짝 선물이 찾아올 지도 몰라요!",
+      "🧁 [무지개 컵케이크] 당신의 다채로운 매력이 주변 사람들에게 전달되어 인기가 상승합니다!",
+      "🍒 [체리 에이드] 답답했던 일이 청량하게 뻥 뚫리는 통쾌한 하루가 될 거예요.",
+      "🥐 [갓 구운 소금빵] 고소하고 평화로운 하루! 소소하지만 확실한 행복을 느껴보세요.",
+      "🍮 [커스터드 푸딩] 탱글탱글 재미있는 일이 일어날 거예요. 웃음 가득한 하루를 보내세요!"
+    ];
+
+    function getFortune() {
+      const display = document.getElementById('fortuneDisplay');
+      
+      // Temporary animation effect
+      display.style.opacity = '0.4';
+      display.style.transform = 'scale(0.98)';
+      
+      setTimeout(() => {
+        const randomIndex = Math.floor(Math.random() * fortunes.length);
+        display.innerHTML = fortunes[randomIndex];
+        display.style.opacity = '1';
+        display.style.transform = 'scale(1)';
+        display.style.transition = 'all 0.3s ease';
+      }, 200);
+    }
+  </script>
+</body>
+</html>
